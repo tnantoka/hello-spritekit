@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>How to create a breakout clone with Sprite Kit.</title>
+<style>
+/* 
+Name: GeekPark article style for Mou app
+Author: hzlzh(hzlzh.dev@gmail.com)
+URL: https://github.com/GeekPark/Doc/blob/master/GeekPark/GeekPark-Style-for-Mou.css
+*/
+body{ font-family:"Microsoft Yahei","Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB",STHeiti; font-size:14px; line-height:1.6; color:#666666; padding-top:10px; padding-bottom:10px; background-color:white; padding:30px; }
+body > *:first-child{ margin-top:0 !important; }
+body > *:last-child{ margin-bottom:0 !important; }
+a{ color:#109EFF; text-decoration:none; }
+a:hover{ border-bottom:1px dotted #109EFF; }
+a:visited, a:active{ color:#109EFF; }
+a.absent{ color:#cc0000; }
+a.anchor{ display:block; padding-left:30px; margin-left:-30px; cursor:pointer; position:absolute; top:0; left:0; bottom:0; }
+p a{ margin:0 2px; }
+h1, h2, h3, h4, h5, h6{ color:#333333; margin:20px 0 10px; padding:0; font-weight:bold; -webkit-font-smoothing:antialiased; cursor:text; position:relative; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor{ background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center; text-decoration:none; }
+h1 tt, h1 code{ font-size:inherit; }
+h2 tt, h2 code{ font-size:inherit; }
+h3 tt, h3 code{ font-size:inherit; }
+h4 tt, h4 code{ font-size:inherit; }
+h5 tt, h5 code{ font-size:inherit; }
+h6 tt, h6 code{ font-size:inherit; }
+h1{ font-size:18px; font-weight:bold; line-height:22px; margin-bottom:5px; color:#333; }
+h2{ font-size:16px; font-weight:bolder; line-height:18px; margin:20px 0; }
+h3{ font-size:14px; }
+h4{ color:#666; font-size:14px; font-weight:bolder; line-height:18px; margin:20px 0; }
+h5{ font-size:14px; }
+h6{ color:#777777; font-size:14px; }
+p, blockquote, ul, ol, dl, li, table, pre{ margin:15px 0; line-height:150%; }
+hr{ background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0; border:0 none; color:#cccccc; height:4px; padding:0; }
+body > h2:first-child{ margin-top:0; padding-top:0; }
+body > h1:first-child{ margin-top:0; padding-top:0; }
+body > h1:first-child + h2{ margin-top:0; padding-top:0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child{ margin-top:0; padding-top:0; }
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6{ margin-top:0; padding-top:0; }
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p{ margin-top:0; }
+li p.first{ display:inline-block; }
+li{ font-size:14px; line-height:150%; margin-bottom:5px; margin-top:0; }
+ul, ol{ padding-left:30px; }
+ul :first-child, ol :first-child{ margin-top:0; }
+dl{ padding:0; }
+dl dt{ font-size:14px; font-weight:bold; font-style:italic; padding:0; margin:15px 0 5px; }
+dl dt:first-child{ padding:0; }
+dl dt > :first-child{ margin-top:0; }
+dl dt > :last-child{ margin-bottom:0; }
+dl dd{ margin:0 0 15px; padding:0 15px; }
+dl dd > :first-child{ margin-top:0; }
+dl dd > :last-child{ margin-bottom:0; }
+blockquote{ background:url("data:image/png;base64,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") no-repeat scroll left 11px transparent; color:#999999; margin-left:28px; min-height:30px; padding:17px 40px 0; }
+blockquote p{ color:#999999 !important; margin-bottom:25px !important; }
+blockquote > :first-child{ margin-top:0; }
+blockquote > :last-child{ margin-bottom:0; }
+table{ padding:0; border-collapse:collapse; }
+table tr{ border-top:1px solid #cccccc; background-color:white; margin:0; padding:0; }
+table tr:nth-child(2n){ background-color:#f8f8f8; }
+table tr th{ font-weight:bold; border:1px solid #cccccc; text-align:left; margin:0; padding:6px 13px; }
+table tr td{ border:1px solid #cccccc; text-align:left; margin:0; padding:6px 13px; }
+table tr th :first-child, table tr td :first-child{ margin-top:0; }
+table tr th :last-child, table tr td :last-child{ margin-bottom:0; }
+img{ border:1px solid #E1E1E1; margin:0 auto 10px; display:block; max-width:512px; padding:5px; }
+span.frame{ display:block; overflow:hidden; }
+span.frame > span{ border:1px solid #dddddd; display:block; float:left; overflow:hidden; margin:13px 0 0; padding:7px; width:auto; }
+span.frame span img{ display:block; float:left; }
+span.frame span span{ clear:both; color:#333333; display:block; padding:5px 0 0; }
+span.align-center{ display:block; overflow:hidden; clear:both; }
+span.align-center > span{ display:block; overflow:hidden; margin:13px auto 0; text-align:center; }
+span.align-center span img{ margin:0 auto; text-align:center; }
+span.align-right{ display:block; overflow:hidden; clear:both; }
+span.align-right > span{ display:block; overflow:hidden; margin:13px 0 0; text-align:right; }
+span.align-right span img{ margin:0; text-align:right; }
+span.float-left{ display:block; margin-right:13px; overflow:hidden; float:left; }
+span.float-left span{ margin:13px 0 0; }
+span.float-right{ display:block; margin-left:13px; overflow:hidden; float:right; }
+span.float-right > span{ display:block; overflow:hidden; margin:13px auto 0; text-align:right; }
+code, tt{ margin:0 2px; padding:0 5px; white-space:nowrap; border:1px solid #eaeaea; background-color:#f8f8f8; border-radius:3px; }
+pre code{ margin:0; padding:0; white-space:pre; border:none; background:transparent; }
+.highlight pre{ background-color:#f8f8f8; border:1px solid #cccccc; font-size:13px; line-height:19px; overflow:auto; padding:6px 10px; border-radius:3px; }
+pre{ background-color:#f8f8f8; border:1px solid #cccccc; font-size:13px; line-height:19px; overflow:auto; padding:6px 10px; border-radius:3px; }
+pre code, pre tt{ background-color:transparent; border:none; }
+@media screen and (min-width: 914px){
+    body{ width:854px; margin:0 auto; }
+}
+</style>
+</head>
+<body>
+<h1 id="howtocreateabreakoutclonewithspritekit.">How to create a breakout clone with Sprite Kit.</h1>
+
+<h2 id="preface">Preface</h2>
+
+<p>Do you like smartphone games?</p>
+
+<p>I like the following type of game.</p>
+
+<ul>
+<li>One-handed</li>
+<li>Portrait</li>
+<li>2D</li>
+<li>Short time</li>
+<li>Enjoy without sounds</li>
+</ul>
+
+<p>Today, Let&#8217;s create a breakout clone with Sprite Kit.</p>
+
+<p>Here is a goal.
+<img src="http://tnantoka.github.io/hello-spritekit/images/play.gif" alt="" /></p>
+
+<h2 id="whatsspritekit">What&#8217;s Sprite Kit</h2>
+
+<p>Sprite Kit is a framework by Apple to create 2D games for iOS and Mac OS X.</p>
+
+<h3 id="pros">Pros</h3>
+
+<ul>
+<li>Atandard feature</li>
+<li>Compatible with UIKit or AppKit</li>
+<li>Easy to use physics or particle</li>
+</ul>
+
+<h3 id="cons">Cons</h3>
+
+<ul>
+<li>iOS 7 or Max OS X 10.9 required_</li>
+<li>non-Andoroid-compliant (Use <a href="http://www.cocos2d-x.org/">Cocos2d-x</a>)</li>
+<li>non&#8211;3D-compliant (Use <a href="http://unity3d.com/">Unity</a>)</li>
+<li>lack of features (<a href="http://koboldkit.com/">Kobold Kit</a> helps you)</li>
+</ul>
+
+<h2 id="maincharacters">Main characters</h2>
+
+<p>Here is the main elements with Sprite Kit.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/figure.png" alt="" />
+<figcaption></figcaption></figure>
+
+<table>
+<colgroup>
+<col style="text-align:left;"/>
+<col style="text-align:left;"/>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;">#</th>
+	<th style="text-align:left;">Name</th>
+	<th style="text-align:left;">Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">1</td>
+	<td style="text-align:left;">SKView</td>
+	<td style="text-align:left;">Subclass of UIView. Rendering Sprite Kit.</td>
+</tr>
+<tr>
+	<td style="text-align:left;">2</td>
+	<td style="text-align:left;">SKScene</td>
+	<td style="text-align:left;">Game scene like title, setting, main, etc.</td>
+</tr>
+<tr>
+	<td style="text-align:left;">3</td>
+	<td style="text-align:left;">SKTransition</td>
+	<td style="text-align:left;">Animation between scenes. Run by <code>presentScene:transition:</code> of SKView.</td>
+</tr>
+</tbody>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">4</td>
+	<td style="text-align:left;">NodeCount, DrawCount, FPS</td>
+	<td style="text-align:left;">Information for developers. Configure by <code>showsDrawCount</code>, <code>showsNodeCount</code>, <code>showsFPS</code> of SKView。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">5</td>
+	<td style="text-align:left;">SKSpriteNode</td>
+	<td style="text-align:left;">Node with texture image (SKTexture) or colorized rect。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">6</td>
+	<td style="text-align:left;">SKLabelNode</td>
+	<td style="text-align:left;">Node with single line text.</td>
+</tr>
+<tr>
+	<td style="text-align:left;">7</td>
+	<td style="text-align:left;">SKShapeNode</td>
+	<td style="text-align:left;">Node with CGPath shapes.</td>
+</tr>
+<tr>
+	<td style="text-align:left;">8</td>
+	<td style="text-align:left;">SKEmitterNode</td>
+	<td style="text-align:left;">Node with particle.</td>
+</tr>
+<tr>
+	<td style="text-align:left;">9</td>
+	<td style="text-align:left;">SKAction</td>
+	<td style="text-align:left;">Animation for nodes. Run with <code>runAction:</code> of SKNode.</td>
+</tr>
+</tbody>
+</table>
+
+<p>SKScene and all nodes are subclass of SKNode. </p>
+
+<h2 id="createaproject">Create a project</h2>
+
+<p><strong>SpriteKit Game</strong> is with Storyboards. This time we don&#8217;t use storyboards. So we use <strong>Empty Application</strong>.
+<strong>SpriteKit.frameWork</strong> will link automatically by Xcode 5.</p>
+
+<h3 id="viewcontrolelr">ViewControlelr</h3>
+
+<ul>
+<li>Set SKView to <code>self.view</code>.</li>
+<li>Show information.</li>
+<li>Present instance of SKScene.</li>
+<li>Hide status bar.</li>
+</ul>
+
+<pre><code class="objc:SJViewController.m">@import SpriteKit;
+
+- (void)loadView {
+    SKView *skView = [[SKView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.view = skView;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    SKView *skView = (SKView *)self.view;    
+    skView.showsDrawCount = YES;
+    skView.showsNodeCount = YES;
+    skView.showsFPS = YES;
+
+    SKScene *scene = [SKScene sceneWithSize:self.view.bounds.size];
+    [skView presentScene:scene];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+@end
+</code></pre>
+
+<h3 id="appdelegate">AppDelegate</h3>
+
+<ul>
+<li>Set ViewController to <code>rootViewController</code>.</li>
+</ul>
+
+<pre><code class="objc:SJAppDelegate.m">#import &quot;SJViewController.h&quot;
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    SJViewController *viewController = SJViewController.new;
+    _window.rootViewController = viewController;
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+</code></pre>
+
+<h3 id="run">Run</h3>
+
+<p>Show scene with black background and information. </p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/project.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>Now, Sprite Kit is ready!</p>
+
+<h2 id="firstscene">First scene</h2>
+
+<p>Create a first scene with single line text.</p>
+
+<h3 id="titlescene">TitleScene</h3>
+
+<ul>
+<li>Subclass of SKScene.</li>
+<li>Add SKLabelNode.</li>
+</ul>
+
+<pre><code class="objc:SJTitleScene.m">- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        SKLabelNode *titleLabel = [SKLabelNode labelNodeWithFontNamed:@&quot;HelveticaNeue&quot;];
+        titleLabel.text = @&quot;BREAKOUT!&quot;;
+        titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+        titleLabel.fontSize = 50.0f;
+        [self addChild:titleLabel];
+    }
+    return self;
+}
+</code></pre>
+
+<h3 id="viewcontroller">ViewController</h3>
+
+<ul>
+<li>Present TitleScene.</li>
+</ul>
+
+<pre><code class="objc:SJViewController.m">import &quot;SJTitleScene.h&quot;
+
+- (void)viewDidLoad {
+    /* abbr. */
+    //SKScene *scene = [SKScene sceneWithSize:self.view.bounds.size];
+    SKScene *scene = [SJTitleScene sceneWithSize:self.view.bounds.size];
+    /* abbr. */
+}
+</code></pre>
+
+<h3 id="run">Run</h3>
+
+<p>Show scene with <strong>BREAKOUT!</strong> at center.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/title.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="drawblocks">Draw blocks</h2>
+
+<p>Write settings with JSON.</p>
+
+<pre><code class="js:config.json">{
+    &quot;block&quot; : {
+        &quot;margin&quot; : 16.0,
+        &quot;width&quot; : 34.0,
+        &quot;height&quot; : 16.0,
+        &quot;rows&quot; : 5,
+        &quot;max_life&quot; : 5
+    },
+}
+</code></pre>
+
+<h2 id="playscene">PlayScene</h2>
+
+<ul>
+<li>Load settings in <code>initialize</code>.</li>
+<li>Create blocks with <code>spriteNodeWithColor</code>. If you use images, you can use <code>spriteNodeWithImageNamed</code> or <code>spriteNodeWithTexture</code>.</li>
+<li>Set life to &#8216;userData&#8217; of block.</li>
+<li>Udpate alpha with block&#8217;s life.</li>
+</ul>
+
+<pre><code class="objc:SJPlayScene.m">- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        [self addBlocks];
+    }
+    return self;
+}
+
+static NSDictionary *config = nil;
++ (void)initialize {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@&quot;config&quot; ofType:@&quot;json&quot;];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!config) {
+        config = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+}
+
+# pragma mark - Block
+
+- (void)addBlocks {
+    
+    int rows = [config[@&quot;block&quot;][@&quot;rows&quot;] intValue];
+    CGFloat margin = [config[@&quot;block&quot;][@&quot;margin&quot;] floatValue];
+    CGFloat width = [config[@&quot;block&quot;][@&quot;width&quot;] floatValue];
+    CGFloat height = [config[@&quot;block&quot;][@&quot;height&quot;] floatValue];
+    
+    int cols = floor(CGRectGetWidth(self.frame) - margin) / (width + margin);
+    
+    CGFloat y = CGRectGetHeight(self.frame) - margin - height / 2;
+    
+    for (int i = 0; i &lt; rows; i++) {
+        CGFloat x = margin + width / 2;
+        for (int j = 0; j &lt; cols; j++) {
+            SKNode *block = [self newBlock];
+            block.position = CGPointMake(x, y);
+            x += width + margin;
+        }
+        y -= height + margin;
+    }
+}
+
+- (SKNode *)newBlock {
+    CGFloat width = [config[@&quot;block&quot;][@&quot;width&quot;] floatValue];
+    CGFloat height = [config[@&quot;block&quot;][@&quot;height&quot;] floatValue];
+    int maxLife = [config[@&quot;block&quot;][@&quot;max_life&quot;] floatValue];
+
+    SKSpriteNode *block = [SKSpriteNode spriteNodeWithColor:[SKColor cyanColor] size:CGSizeMake(width, height)];
+    block.name = @&quot;block&quot;;
+
+    int life = (arc4random() % maxLife) + 1;
+    block.userData = @{ @&quot;life&quot; : @(life) }.mutableCopy;
+    [self updateBlockAlpha:block];
+    
+    [self addChild:block];
+
+    return block;
+}
+
+- (void)updateBlockAlpha:(SKNode *)block {
+    int life = [block.userData[@&quot;life&quot;] intValue];
+    block.alpha = life * 0.2f;
+}
+</code></pre>
+
+<h3 id="titlescene">TitleScene</h3>
+
+<ul>
+<li>Go to PlayScene with push transition by tap.</li>
+</ul>
+
+<pre><code class="objc:SJTitleScene.m">#import &quot;SJPlayScene.h&quot;
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    SKScene *scene = [SJPlayScene sceneWithSize:self.size];
+    SKTransition *transition = [SKTransition pushWithDirection:SKTransitionDirectionUp duration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+</code></pre>
+
+<h3 id="run">Run</h3>
+
+<p>Show blocks!</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/block.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="paddleandball">Paddle and ball</h2>
+
+<p>Show paddle, ball and move paddle by tap.</p>
+
+<h3 id="settings">Settings</h3>
+
+<ul>
+<li>Add settings for paddle and ball.</li>
+</ul>
+
+<pre><code class="js:config.json">    &quot;paddle&quot; : {
+        &quot;width&quot; : 70.0,
+        &quot;height&quot; : 14.0,
+        &quot;y&quot; : 40.0,
+    },
+    &quot;ball&quot; : {
+        &quot;radius&quot; : 6.0,
+    },
+</code></pre>
+
+<h3 id="playscene">PlayScene</h3>
+
+<ul>
+<li>Add ball if ball doesn&#8217;t exist by tap.</li>
+<li>Move paddle with SKAction by tap.</li>
+</ul>
+
+<p>Paddle or ball are searched by <code>name</code> with <code>childNodeWithName:</code>.</p>
+
+<pre><code class="objc:SJPlayScene.m">
+- (id)initWithSize:(CGSize)size {
+        /* abbr. */
+        [self addPaddle];
+        /* abbr. */
+}
+
+# pragma mark - Paddle
+
+- (void)addPaddle {
+    CGFloat width = [config[@&quot;paddle&quot;][@&quot;width&quot;] floatValue];
+    CGFloat height = [config[@&quot;paddle&quot;][@&quot;height&quot;] floatValue];
+    CGFloat y = [config[@&quot;paddle&quot;][@&quot;y&quot;] floatValue];
+    
+    SKSpriteNode *paddle = [SKSpriteNode spriteNodeWithColor:[SKColor brownColor] size:CGSizeMake(width, height)];
+    paddle.name = @&quot;paddle&quot;;
+    paddle.position = CGPointMake(CGRectGetMidX(self.frame), y);
+    
+    [self addChild:paddle];
+}
+
+- (SKNode *)paddleNode {
+    return [self childNodeWithName:@&quot;paddle&quot;];
+}
+
+# pragma mark - Ball
+
+- (void)addBall {
+    CGFloat radius = [config[@&quot;ball&quot;][@&quot;radius&quot;] floatValue];
+
+    SKShapeNode *ball = [SKShapeNode node];
+    ball.name = @&quot;ball&quot;;
+    ball.position = CGPointMake(CGRectGetMidX([self paddleNode].frame), CGRectGetMaxY([self paddleNode].frame) + radius);
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path, NULL, 0, 0, radius, 0, M_PI * 2, YES);
+    ball.path = path;
+    ball.fillColor = [SKColor yellowColor];
+    ball.strokeColor = [SKColor clearColor];
+
+    CGPathRelease(path);
+
+    [self addChild:ball];
+}
+
+- (SKNode *)ballNode {
+    return [self childNodeWithName:@&quot;ball&quot;];
+}
+
+# pragma mark - Touch
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+
+    if (![self ballNode]) {
+        [self addBall];
+        return;
+    }
+
+    UITouch *touch = [touches anyObject];
+    CGPoint locaiton = [touch locationInNode:self];
+
+    CGFloat speed = [config[@&quot;paddle&quot;][@&quot;speed&quot;] floatValue];
+
+    CGFloat x = locaiton.x;
+    CGFloat diff = abs(x - [self paddleNode].position.x);
+    CGFloat duration = speed * diff;
+    SKAction *move = [SKAction moveToX:x duration:duration];
+    [[self paddleNode] runAction:move];
+}
+
+</code></pre>
+
+<h3 id="run">Run</h3>
+
+<p>Show scene with paddle.</p>
+
+<ul>
+<li>First tap: Show ball</li>
+<li>Second tap: Move paddle</li>
+</ul>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/paddle.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="physicsandcollistiondetection">Physics and collistion detection</h2>
+
+<p>Sprite Kit has build in physics engine. If set &#8216;physicsBody&#8217; to node, Sprite kit will simulate physics automatically.</p>
+
+<p>It&#8217;s easy to use for collision detection.</p>
+
+<h3 id="settings">Settings</h3>
+
+<ul>
+<li>Add <code>speed</code>, <code>velocity</code>.</li>
+</ul>
+
+<pre><code class="js:config.json">    &quot;paddle&quot; : {
+        &quot;width&quot; : 70.0,
+        &quot;height&quot; : 14.0,
+        &quot;y&quot; : 40.0,
+        &quot;speed&quot; : 0.005
+    },
+    &quot;ball&quot; : {
+        &quot;radius&quot; : 6.0,
+        &quot;velocity&quot; : {
+            &quot;x&quot; : 50.0,
+            &quot;y&quot; : 120.0
+        }
+    },
+
+</code></pre>
+
+<h3 id="playscene">PlayScene</h3>
+
+<ul>
+<li>Set &#8216;physicsBody&#8217; to scene, blocks, paddle, ball.</li>
+<li>Set &#8216;dynaimic&#8217; is No to blocks, paddle.</li>
+<li>Ball is dynamic but not affected by gravity, friction etc.</li>
+<li>Set <code>categoryBitMask</code>, <code>contactTestBitMask</code> and <code>physicsWorld.contactDelegate</code> for contact delegate.</li>
+<li>Decrease block life in <code>didBeginContact:</code>. You must order nodes of contact in delegate method.</li>
+</ul>
+
+<pre><code class="objc:SJPlayScene.m">static const uint32_t blockCategory = 0x1 &lt;&lt; 0;
+static const uint32_t ballCategory = 0x1 &lt;&lt; 1;
+
+@interface SJPlayScene () &lt;SKPhysicsContactDelegate&gt;
+@end
+
+- (id)initWithSize:(CGSize)size {
+        /* abbr. */        
+        self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+        self.physicsWorld.contactDelegate = self;
+        /* abbr. */
+}
+
+# pragma mark - Block
+
+- (SKNode *)newBlock {
+    /* abbr. */    
+    block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+    block.physicsBody.dynamic = NO;
+    block.physicsBody.categoryBitMask = blockCategory;
+    /* abbr. */    
+}
+
+- (void)decreaseBlockLife:(SKNode *)block {
+    int life = [block.userData[@&quot;life&quot;] intValue] - 1;
+    block.userData[@&quot;life&quot;] = @(life);
+    [self updateBlockAlpha:block];
+}
+
+# pragma mark - Paddle
+
+- (void)addPaddle {
+    /* abbr. */    
+    paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:paddle.size];
+    paddle.physicsBody.dynamic = NO;
+    /* abbr. */    
+}
+
+# pragma mark - Ball
+
+- (void)addBall {
+    /* abbr. */    
+    CGFloat velocityX = [config[@&quot;ball&quot;][@&quot;velocity&quot;][@&quot;x&quot;] floatValue];
+    CGFloat velocityY = [config[@&quot;ball&quot;][@&quot;velocity&quot;][@&quot;y&quot;] floatValue];
+    /* abbr. */    
+    ball.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:radius];
+    ball.physicsBody.affectedByGravity = NO;
+    ball.physicsBody.velocity = CGVectorMake(velocityX, velocityY);
+    ball.physicsBody.restitution = 1.0f;
+    ball.physicsBody.linearDamping = 0;
+    ball.physicsBody.friction = 0;
+    ball.physicsBody.usesPreciseCollisionDetection = YES;
+    ball.physicsBody.categoryBitMask = ballCategory;
+    ball.physicsBody.contactTestBitMask = blockCategory;
+    /* abbr. */    
+}
+
+# pragma mark - SKPhysicsContactDelegate
+
+- (void)didBeginContact:(SKPhysicsContact *)contact {
+    SKPhysicsBody *firstBody, *secondBody;
+    
+    if (contact.bodyA.categoryBitMask &lt; contact.bodyB.categoryBitMask) {
+        firstBody = contact.bodyA;
+        secondBody = contact.bodyB;
+    } else {
+        firstBody = contact.bodyB;
+        secondBody = contact.bodyA;
+    }
+    
+    if (firstBody.categoryBitMask &amp; blockCategory) {
+        if (secondBody.categoryBitMask &amp; ballCategory) {
+            [self decreaseBlockLife:firstBody.node];
+        }
+    }
+}
+</code></pre>
+
+<h3 id="run">Run</h3>
+
+<p>OK, it&#8217;s a gmame.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/hit.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h4 id="debugborderwithphysicsdebugger">Debug border with PhysicsDebugger</h4>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/physics.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>Draw border with <a href="https://github.com/ymc-thzi/PhysicsDebugger">PhysicsDebugger</a>.</p>
+
+<h5 id="installationwithcocoapods">Installation with CocoaPods</h5>
+
+<pre><code class="ruby:Podfile">pod 'PhysicsDebugger', git: 'https://github.com/ymc-thzi/PhysicsDebugger.git'
+</code></pre>
+
+<h5 id="how-to-use">How-to-use</h5>
+
+<pre><code class="objc:YourScene.m">#import &quot;YMCPhysicsDebugger.h&quot;
+
+- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        [YMCPhysicsDebugger init];
+        /* Create scene contens */
+       [self drawPhysicsBodies];
+    }
+}
+</code></pre>
+
+<h4 id="collisionandcontact">collision and contact</h4>
+
+<p>All nodes are collide by default.
+If <code>collisionTestBitMask</code> of ball is without block, It will pass through blocks.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/collision.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="sparkwithparticle">Spark with particle</h2>
+
+<p>Sprite Kit has built in particle node (SKEmitterNode) and editor (<a href="https://developer.apple.com/LIBRARY/IOS/documentation/IDEs/Conceptual/xcode_guide-particle_emitter/Introduction/Introduction.html">Particle Emitter Editor</a>).</p>
+
+<h3 id="particlefile">Particle File</h3>
+
+<ul>
+<li>New File…</li>
+<li>Resource is <strong>SpriteKit Particle File</strong></li>
+<li>Particle template is <strong>Spark</strong></li>
+<li>File name is <code>spark.sks</code></li>
+</ul>
+
+<p>Here is aparticle file.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/particle.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h3 id="playscene">PlayScene</h3>
+
+<ul>
+<li>Show and fade out particle with remove blocks.</li>
+</ul>
+
+<pre><code class="objc:SJPlayScene.m"># pragma mark - Block
+
+- (void)decreaseBlockLife:(SKNode *)block {
+    /* abbr. */
+    if (life &lt; 1) {
+        [self removeNodeWithSpark:block];
+    }
+    /* abbr. */
+}
+
+# pragma mark - Utilities
+
+- (void)removeNodeWithSpark:(SKNode *)node {
+    NSString *sparkPath = [[NSBundle mainBundle] pathForResource:@&quot;spark&quot; ofType:@&quot;sks&quot;];
+    SKEmitterNode *spark = [NSKeyedUnarchiver unarchiveObjectWithFile:sparkPath];
+    spark.position = node.position;
+    spark.xScale = spark.yScale = 0.3f;
+    [self addChild:spark];
+    
+    SKAction *fadeOut = [SKAction fadeOutWithDuration:0.3f];
+    SKAction *remove = [SKAction removeFromParent];
+    SKAction *sequence = [SKAction sequence:@[fadeOut, remove]];
+    [spark runAction:sequence];
+    
+    [node removeFromParent];
+}
+</code></pre>
+
+<h3 id="run">Run</h3>
+
+<p>Explosion!</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/spark.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="adjustment">Adjustment</h2>
+
+<p>Some adjustment for play a game.</p>
+
+<h3 id="settings">Settings</h3>
+
+<ul>
+<li>Add settings for label and life.</li>
+</ul>
+
+<pre><code class="js:config.json">    &quot;label&quot; : {
+        &quot;margin&quot; : 5.0,
+        &quot;font_size&quot; : 14.0
+    },
+    &quot;max_life&quot; : 5
+</code></pre>
+
+<h3 id="playscene">PlayScene</h3>
+
+<ul>
+<li>Add property to store life and stage.</li>
+<li>Add initializer with life and stage.</li>
+<li>Add labels. Set &#8216;zPosition&#8217; is 1 to show foreground.</li>
+<li>Add velocity to change difficulty.</li>
+<li>Next stage if <code>blockNodes</code> is 0.</li>
+</ul>
+
+<h4 id="zposition">zPosition</h4>
+
+<p>If not set <code>zPosition</code>, labels will be not foreground.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/z_position.png" alt="" />
+<figcaption></figcaption></figure>
+
+<pre><code class="objc:SJPlayScene.h">@property (nonatomic) int life;
+@property (nonatomic) int stage;
+- (id)initWithSize:(CGSize)size life:(int)life stage:(int)stage;
+</code></pre>
+
+<pre><code class="objc:SJPlayScene.m">#import &quot;SJGameOverScene.h&quot;
+
+- (id)initWithSize:(CGSize)size life:(int)life stage:(int)stage {
+    self = [super initWithSize:size];
+    if (self) {
+        self.life = life;
+        self.stage = stage;
+
+        [self addBlocks];
+        [self addPaddle];
+        
+        [self addStageLabel];
+        [self addLifeLabel];
+        [self updateLifeLabel];
+        
+        self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+        self.physicsWorld.contactDelegate = self;
+    }
+    return self;
+}
+
+- (id)initWithSize:(CGSize)size {
+    return [self initWithSize:size life:[config[@&quot;max_life&quot;] intValue] stage:1];
+}
+
+# pragma mark - Block
+
+- (void)decreaseBlockLife:(SKNode *)block {
+        /* abbr. */
+        if ([self blockNodes].count &lt; 1) {
+            [self nextLevel];
+        }
+        /* abbr. */
+}
+
+- (NSArray *)blockNodes {
+    NSMutableArray *nodes = @[].mutableCopy;
+    [self enumerateChildNodesWithName:@&quot;block&quot; usingBlock:^(SKNode *node, BOOL *stop) {
+        [nodes addObject:node];
+    }];
+    return nodes;
+}
+
+# pragma mark - Ball
+
+- (void)addBall {
+    /* abbr. */
+    ball.physicsBody.velocity = CGVectorMake(velocityX + self.stage, velocityY + self.stage);
+    /* abbr. */
+}
+
+# pragma mark - Label
+
+- (void)addStageLabel {
+    CGFloat margin = [config[@&quot;label&quot;][@&quot;margin&quot;] floatValue];
+    CGFloat fontSize = [config[@&quot;label&quot;][@&quot;font_size&quot;] floatValue];
+
+    SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@&quot;HelveticaNeue-Bold&quot;];
+    label.text = [NSString stringWithFormat:@&quot;STAGE %d&quot;, _stage];
+    label.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    label.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+    label.position = CGPointMake(CGRectGetMaxX(self.frame) - margin, CGRectGetMaxY(self.frame) - margin);
+    label.fontSize = fontSize;
+    label.zPosition = 1.0f;
+    [self addChild:label];
+}
+
+- (void)addLifeLabel {
+    CGFloat margin = [config[@&quot;label&quot;][@&quot;margin&quot;] floatValue];
+    CGFloat fontSize = [config[@&quot;label&quot;][@&quot;font_size&quot;] floatValue];
+
+    SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@&quot;HiraKakuProN-W3&quot;];
+    label.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    label.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+    label.position = CGPointMake(margin, CGRectGetMaxY(self.frame) - margin);
+    label.fontSize = fontSize;
+    label.zPosition = 1.0f;
+    label.color = [SKColor magentaColor];
+    label.colorBlendFactor = 1.0f;
+    label.name = @&quot;lifeLabel&quot;;
+    [self addChild:label];
+}
+
+- (void)updateLifeLabel {
+    NSMutableString *s = @&quot;&quot;.mutableCopy;
+    for (int i = 0; i &lt; _life; i++) {
+        [s appendString:@&quot;♥&quot;];
+    }
+    [self lifeLabel].text = s;
+}
+
+- (SKLabelNode *)lifeLabel {
+    return (SKLabelNode *)[self childNodeWithName:@&quot;lifeLabel&quot;];
+}
+
+# pragma mark - Callbacks
+
+- (void)update:(NSTimeInterval)currentTime {
+    if((int)currentTime % 5 == 0) {
+        CGVector velocity = [self ballNode].physicsBody.velocity;
+        velocity.dx *= 1.001f;
+        velocity.dy *= 1.001f;
+        [self ballNode].physicsBody.velocity = velocity;
+    }
+}
+
+- (void)didEvaluateActions {
+    CGFloat width = [config[@&quot;paddle&quot;][@&quot;width&quot;] floatValue];
+
+    CGPoint paddlePosition = [self paddleNode].position;
+    if (paddlePosition.x &lt; width / 2) {
+        paddlePosition.x = width / 2;
+    } else if (paddlePosition.x &gt; CGRectGetWidth(self.frame) - width / 2) {
+        paddlePosition.x = CGRectGetWidth(self.frame) - width / 2;
+    }
+    [self paddleNode].position = paddlePosition;
+}
+
+- (void)didSimulatePhysics {
+    if ([self ballNode] &amp;&amp; [self ballNode].position.y &lt; [config[@&quot;ball&quot;][@&quot;radius&quot;] floatValue] * 2) {
+        [self removeNodeWithSpark:[self ballNode]];
+        _life--;
+        [self updateLifeLabel];
+        if (_life &lt; 1) {
+            [self gameOver];
+        }
+    }
+}
+
+# pragma mark - Utilities
+
+- (void)gameOver {
+    SKScene *scene = [SJGameOverScene sceneWithSize:self.size];
+    SKTransition *transition = [SKTransition pushWithDirection:SKTransitionDirectionDown duration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+
+- (void)nextLevel {
+    SJPlayScene *scene = [[SJPlayScene alloc] initWithSize:self.size life:self.life stage:self.stage + 1];
+    SKTransition *transition = [SKTransition doorwayWithDuration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+
+</code></pre>
+
+<h4 id="callbacks">Callbacks</h4>
+
+<p>Here is game loop processing with Sprite Kit.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/chart.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>You can override <code>update:</code>, <code>didEvaluateActions</code> and <code>didSimulatePhysics</code>.</p>
+
+<p>This time, use for the following.</p>
+
+<ul>
+<li>Increase ball speed in <code>update:</code>.</li>
+<li>Adjust paddle position in <code>didEvaluateActions</code>.</li>
+<li>Decrease life in <code>didSimulatePhysics</code>.</li>
+</ul>
+
+<h3 id="gameoverscene">GameOverScene</h3>
+
+<p>It is close to the same TitleScene.</p>
+
+<pre><code class="objc:SJGameOverScene.m">#import &quot;SJPlayScene.h&quot;
+
+- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        SKLabelNode *titleLabel = [SKLabelNode labelNodeWithFontNamed:@&quot;HelveticaNeue&quot;];
+        titleLabel.text = @&quot;GAVE OVER...&quot;;
+        titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+        titleLabel.fontSize = 40.0f;
+        [self addChild:titleLabel];
+    }
+    return self;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    SKScene *scene = [SJPlayScene sceneWithSize:self.size];
+    SKTransition *transition = [SKTransition pushWithDirection:SKTransitionDirectionUp duration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+
+</code></pre>
+
+<h3 id="run">Run</h3>
+
+<p>Show <strong>GAME OVER…</strong> if life is zero.</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/game_over.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="done">Done</h2>
+
+<p>It&#8217;s all done.</p>
+
+<p>Source code is available on <a href="https://github.com/tnantoka/hello-spritekit">tnantoka/hello-spritekit</a>.Licensed under the terms of the MIT license.Feel free to use.</p>
+
+<p>Please give me a star!</p>
+
+<h2 id="documents">Documents</h2>
+
+<ul>
+<li><a href="https://developer.apple.com/library/IOs/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Introduction/Introduction.html">Sprite Kit Programming Guide</a></li>
+<li><a href="https://developer.apple.com/Library/ios/documentation/SpriteKit/Reference/SpriteKitFramework_Ref/_index.html">Sprite Kit Framework Reference</a></li>
+</ul>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/filename.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sprite Kitでブロック崩し</title>
+<style>
+/* 
+Name: GeekPark article style for Mou app
+Author: hzlzh(hzlzh.dev@gmail.com)
+URL: https://github.com/GeekPark/Doc/blob/master/GeekPark/GeekPark-Style-for-Mou.css
+*/
+body{ font-family:"Microsoft Yahei","Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB",STHeiti; font-size:14px; line-height:1.6; color:#666666; padding-top:10px; padding-bottom:10px; background-color:white; padding:30px; }
+body > *:first-child{ margin-top:0 !important; }
+body > *:last-child{ margin-bottom:0 !important; }
+a{ color:#109EFF; text-decoration:none; }
+a:hover{ border-bottom:1px dotted #109EFF; }
+a:visited, a:active{ color:#109EFF; }
+a.absent{ color:#cc0000; }
+a.anchor{ display:block; padding-left:30px; margin-left:-30px; cursor:pointer; position:absolute; top:0; left:0; bottom:0; }
+p a{ margin:0 2px; }
+h1, h2, h3, h4, h5, h6{ color:#333333; margin:20px 0 10px; padding:0; font-weight:bold; -webkit-font-smoothing:antialiased; cursor:text; position:relative; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor{ background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center; text-decoration:none; }
+h1 tt, h1 code{ font-size:inherit; }
+h2 tt, h2 code{ font-size:inherit; }
+h3 tt, h3 code{ font-size:inherit; }
+h4 tt, h4 code{ font-size:inherit; }
+h5 tt, h5 code{ font-size:inherit; }
+h6 tt, h6 code{ font-size:inherit; }
+h1{ font-size:18px; font-weight:bold; line-height:22px; margin-bottom:5px; color:#333; }
+h2{ font-size:16px; font-weight:bolder; line-height:18px; margin:20px 0; }
+h3{ font-size:14px; }
+h4{ color:#666; font-size:14px; font-weight:bolder; line-height:18px; margin:20px 0; }
+h5{ font-size:14px; }
+h6{ color:#777777; font-size:14px; }
+p, blockquote, ul, ol, dl, li, table, pre{ margin:15px 0; line-height:150%; }
+hr{ background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0; border:0 none; color:#cccccc; height:4px; padding:0; }
+body > h2:first-child{ margin-top:0; padding-top:0; }
+body > h1:first-child{ margin-top:0; padding-top:0; }
+body > h1:first-child + h2{ margin-top:0; padding-top:0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child{ margin-top:0; padding-top:0; }
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6{ margin-top:0; padding-top:0; }
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p{ margin-top:0; }
+li p.first{ display:inline-block; }
+li{ font-size:14px; line-height:150%; margin-bottom:5px; margin-top:0; }
+ul, ol{ padding-left:30px; }
+ul :first-child, ol :first-child{ margin-top:0; }
+dl{ padding:0; }
+dl dt{ font-size:14px; font-weight:bold; font-style:italic; padding:0; margin:15px 0 5px; }
+dl dt:first-child{ padding:0; }
+dl dt > :first-child{ margin-top:0; }
+dl dt > :last-child{ margin-bottom:0; }
+dl dd{ margin:0 0 15px; padding:0 15px; }
+dl dd > :first-child{ margin-top:0; }
+dl dd > :last-child{ margin-bottom:0; }
+blockquote{ background:url("data:image/png;base64,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") no-repeat scroll left 11px transparent; color:#999999; margin-left:28px; min-height:30px; padding:17px 40px 0; }
+blockquote p{ color:#999999 !important; margin-bottom:25px !important; }
+blockquote > :first-child{ margin-top:0; }
+blockquote > :last-child{ margin-bottom:0; }
+table{ padding:0; border-collapse:collapse; }
+table tr{ border-top:1px solid #cccccc; background-color:white; margin:0; padding:0; }
+table tr:nth-child(2n){ background-color:#f8f8f8; }
+table tr th{ font-weight:bold; border:1px solid #cccccc; text-align:left; margin:0; padding:6px 13px; }
+table tr td{ border:1px solid #cccccc; text-align:left; margin:0; padding:6px 13px; }
+table tr th :first-child, table tr td :first-child{ margin-top:0; }
+table tr th :last-child, table tr td :last-child{ margin-bottom:0; }
+img{ border:1px solid #E1E1E1; margin:0 auto 10px; display:block; max-width:512px; padding:5px; }
+span.frame{ display:block; overflow:hidden; }
+span.frame > span{ border:1px solid #dddddd; display:block; float:left; overflow:hidden; margin:13px 0 0; padding:7px; width:auto; }
+span.frame span img{ display:block; float:left; }
+span.frame span span{ clear:both; color:#333333; display:block; padding:5px 0 0; }
+span.align-center{ display:block; overflow:hidden; clear:both; }
+span.align-center > span{ display:block; overflow:hidden; margin:13px auto 0; text-align:center; }
+span.align-center span img{ margin:0 auto; text-align:center; }
+span.align-right{ display:block; overflow:hidden; clear:both; }
+span.align-right > span{ display:block; overflow:hidden; margin:13px 0 0; text-align:right; }
+span.align-right span img{ margin:0; text-align:right; }
+span.float-left{ display:block; margin-right:13px; overflow:hidden; float:left; }
+span.float-left span{ margin:13px 0 0; }
+span.float-right{ display:block; margin-left:13px; overflow:hidden; float:right; }
+span.float-right > span{ display:block; overflow:hidden; margin:13px auto 0; text-align:right; }
+code, tt{ margin:0 2px; padding:0 5px; white-space:nowrap; border:1px solid #eaeaea; background-color:#f8f8f8; border-radius:3px; }
+pre code{ margin:0; padding:0; white-space:pre; border:none; background:transparent; }
+.highlight pre{ background-color:#f8f8f8; border:1px solid #cccccc; font-size:13px; line-height:19px; overflow:auto; padding:6px 10px; border-radius:3px; }
+pre{ background-color:#f8f8f8; border:1px solid #cccccc; font-size:13px; line-height:19px; overflow:auto; padding:6px 10px; border-radius:3px; }
+pre code, pre tt{ background-color:transparent; border:none; }
+@media screen and (min-width: 914px){
+    body{ width:854px; margin:0 auto; }
+}
+</style>
+</head>
+<body>
+<h1 id="spritekit">Sprite Kitでブロック崩し</h1>
+
+<h2 id="">はじめに</h2>
+
+<p>みなさん、スマフォのゲームは好きですか？
+僕は、</p>
+
+<ul>
+<li>片手で操作できる</li>
+<li>画面は縦向き</li>
+<li>2D</li>
+<li>短時間でプレイできる</li>
+<li>音なしでも楽しめる</li>
+<li>側近的な奴がスタミナとかガチャとか言い出さない</li>
+</ul>
+
+<p>ような、電車やトイレでサクッと遊べるゲームが好きです。</p>
+
+<p>今日は、そんなお手軽ゲームの代表的存在<strong>ブロック崩し</strong>をSprite Kitで作ってみます。 </p>
+
+<p>こちらが完成イメージです。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/play.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="spritekit">Sprite Kitとは</h2>
+
+<p>Sprite Kitとは、iOS・Mac OS X向けの2Dゲームを作るための、Apple純正フレームワークです。</p>
+
+<h3 id="">メリット</h3>
+
+<ul>
+<li>OS標準機能</li>
+<li>UIKit・AppKitと連携しやすい</li>
+<li>物理演算やパーティクルが簡単</li>
+</ul>
+
+<h3 id="">デメリット</h3>
+
+<ul>
+<li>iOS 7, Max OS X 10.9以降が必要</li>
+<li>Andoroid対応不可（<a href="http://www.cocos2d-x.org/">Cocos2d-x</a>で作りましょう）</li>
+<li>3D未対応（<a href="http://unity3d.com/">Unity</a>で作りましょう）</li>
+<li>機能不足（結局<a href="http://koboldkit.com/">Kobold Kit</a>などの助けが欲しくなるかも）</li>
+</ul>
+
+<h3 id="">メリット？デメリット？？</h3>
+
+<ul>
+<li>大きなアップデートは年1回（変更に振り回されずには済むけど、他のフレームワークの進化に置いていかれる）</li>
+</ul>
+
+<p>という感じでしょうか。</p>
+
+<h2 id="">主な登場人物</h2>
+
+<p>以下が、Sprite Kitに登場する主な要素です。<br/>
+他にもありますが、ひとまずこのあたりを知っていれば、あとはリファレンスを見ながら開発できます。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/figure.png" alt="" />
+<figcaption></figcaption></figure>
+
+<table>
+<colgroup>
+<col style="text-align:left;"/>
+<col style="text-align:left;"/>
+<col style="text-align:left;"/>
+</colgroup>
+
+<thead>
+<tr>
+	<th style="text-align:left;">#</th>
+	<th style="text-align:left;">要素</th>
+	<th style="text-align:left;">説明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">1</td>
+	<td style="text-align:left;">SKView</td>
+	<td style="text-align:left;">UIViewのサブクラス。Sprite Kitの描画を担当します。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">2</td>
+	<td style="text-align:left;">SKScene</td>
+	<td style="text-align:left;">ゲームの1画面に相当。この中にいろいろな子ノードを追加してゲーム画面を作っていきます。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">3</td>
+	<td style="text-align:left;">SKTransition</td>
+	<td style="text-align:left;">シーン遷移時のアニメーションを指定します。フェードイン・アウトやドアなど様々な種類があります。SKViewの<code>presentScene:transition:</code>メソッドで指定します。</td>
+</tr>
+</tbody>
+
+<tbody>
+<tr>
+	<td style="text-align:left;">4</td>
+	<td style="text-align:left;">NodeCount, DrawCount, FPS</td>
+	<td style="text-align:left;">開発用の情報表示です。SKViewの<code>showsDrawCount</code>, <code>showsNodeCount</code>, <code>showsFPS</code>をYESにすることで描画されます。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">5</td>
+	<td style="text-align:left;">SKSpriteNode</td>
+	<td style="text-align:left;">テクスチャ画像（SKTexture）を表示するためのノードです。色を指定して矩形の表示もできます。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">6</td>
+	<td style="text-align:left;">SKLabelNode</td>
+	<td style="text-align:left;">1行のテキストを表示するノードです。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">7</td>
+	<td style="text-align:left;">SKShapeNode</td>
+	<td style="text-align:left;">CGPathを使った図形を表示するノードです。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">8</td>
+	<td style="text-align:left;">SKEmitterNode</td>
+	<td style="text-align:left;">パーティクルを表示するノードです。</td>
+</tr>
+<tr>
+	<td style="text-align:left;">9</td>
+	<td style="text-align:left;">SKAction</td>
+	<td style="text-align:left;">ノードをアニメーションさせる時に利用します。SKNodeの<code>runAction:</code>で実行します。</td>
+</tr>
+</tbody>
+</table>
+
+<p>なお、SKScene及び全てのノードはSKNodeのサブクラスです。<code>addChild:</code>や<code>runAction:</code>などの基本的な操作はそこから継承されています。</p>
+
+<p>それでは、これらの要素を使ってゲームを作っていきます。</p>
+
+<h2 id="">プロジェクトの作成</h2>
+
+<p>まずはプロジェクトを作ります。</p>
+
+<p><strong>SpriteKit Game</strong>テンプレートも用意されていますが、今回はStoryBoardsを使わないため、<strong>Empty Application</strong>から作ります。<br/>
+<strong>SpriteKit.frameWork</strong>はXcode 5が自動でリンクしてくれるので、Build Phasesから追加する必要はありません。</p>
+
+<p>まずは、ViewControllerを作ります。<br/>
+<code>loadView</code>でself.viewをSKViewに差し替えて、<code>viewDidLoad</code>で情報表示の設定をした後、<code>SKScene</code>をインスタンス化して表示します。<br/>
+また、ステータスバーも非表示にします。</p>
+
+<pre><code class="objc:SJViewController.m">@import SpriteKit;
+
+- (void)loadView {
+    SKView *skView = [[SKView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.view = skView;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    SKView *skView = (SKView *)self.view;    
+    skView.showsDrawCount = YES;
+    skView.showsNodeCount = YES;
+    skView.showsFPS = YES;
+
+    SKScene *scene = [SKScene sceneWithSize:self.view.bounds.size];
+    [skView presentScene:scene];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+@end
+</code></pre>
+
+<p>これをAppDelegateで<code>rootViewController</code>に設定します。</p>
+
+<pre><code class="objc:SJAppDelegate.m">#import &quot;SJViewController.h&quot;
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    SJViewController *viewController = SJViewController.new;
+    _window.rootViewController = viewController;
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+</code></pre>
+
+<p>この状態で実行すると、黒い背景にFPS等の情報だけがある画面が表示されます。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/project.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>これでSprite Kitでの開発準備が整いました。</p>
+
+<h2 id="">初めてのシーン</h2>
+
+<p>最初の画面として、タイトルを表示するだけの単純な画面を作ります。<br/>
+SKSceneのサブクラスとしてTitleSceneを追加して、SKLabelNodeを1つ追加します。</p>
+
+<pre><code class="objc:SJTitleScene.m">- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        SKLabelNode *titleLabel = [SKLabelNode labelNodeWithFontNamed:@&quot;HelveticaNeue&quot;];
+        titleLabel.text = @&quot;BREAKOUT!&quot;;
+        titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+        titleLabel.fontSize = 50.0f;
+        [self addChild:titleLabel];
+    }
+    return self;
+}
+</code></pre>
+
+<p>ViewControllerでこのシーンをSKViewに表示します。</p>
+
+<pre><code class="objc:SJViewController.m">import &quot;SJTitleScene.h&quot;
+
+- (void)viewDidLoad {
+    /* 省略 */
+    //SKScene *scene = [SKScene sceneWithSize:self.view.bounds.size];
+    SKScene *scene = [SJTitleScene sceneWithSize:self.view.bounds.size];
+    /* 省略 */
+}
+</code></pre>
+
+<p>これで中央に<strong>BREAKOUT!</strong>と表示される画面ができました。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/title.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="">ブロックの表示</h2>
+
+<p>それでは、ブロックを表示しましょう。</p>
+
+<p>まず、設定をJSON（pistを記事に貼ると読みづらいため）で書きます。</p>
+
+<pre><code class="js:config.json">{
+    &quot;block&quot; : {
+        &quot;margin&quot; : 16.0,
+        &quot;width&quot; : 34.0,
+        &quot;height&quot; : 16.0,
+        &quot;rows&quot; : 5,
+        &quot;max_life&quot; : 5
+    },
+}
+</code></pre>
+
+<p>次にSKSceneのサブクラスとしてPlaySceneを追加し、設定を元にブロックを配置していきます。 </p>
+
+<p>設定は<code>initialize</code>で読み込んで、static変数<code>config</code>に保持しています。</p>
+
+<p><code>addBlocks</code>では、幅・高さ・マージン・rowsなどから表示できるブロック数を計算して表示しています。<br/>
+また、<code>newBlock</code>の中では、ブロックの耐久力（<code>life</code>）をランダムに設定し<code>userData</code>に持たせて、それに応じて<code>updateBlockAplha:</code>メソッドで透明度を変化させています。</p>
+
+<p>本来はBlockNodeをSKSpriteNodeのサブクラスとして作るべきところですが、簡略化のためSceneの中で処理しています。</p>
+
+<p>また、今回は画像を使わないため<code>spriteNodeWithColor</code>で矩形にしていますが、通常は<code>spriteNodeWithImageNamed</code>や<code>spriteNodeWithTexture</code>でテクスチャ画像を指定して使います。<br/>
+なお、<code>SKColor</code>はiOSならUIColor、MacならNSColorを返してくれるマクロです。</p>
+
+<pre><code class="objc:SJPlayScene.m">- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        [self addBlocks];
+    }
+    return self;
+}
+
+static NSDictionary *config = nil;
++ (void)initialize {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@&quot;config&quot; ofType:@&quot;json&quot;];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!config) {
+        config = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+}
+
+# pragma mark - Block
+
+- (void)addBlocks {
+    
+    int rows = [config[@&quot;block&quot;][@&quot;rows&quot;] intValue];
+    CGFloat margin = [config[@&quot;block&quot;][@&quot;margin&quot;] floatValue];
+    CGFloat width = [config[@&quot;block&quot;][@&quot;width&quot;] floatValue];
+    CGFloat height = [config[@&quot;block&quot;][@&quot;height&quot;] floatValue];
+    
+    int cols = floor(CGRectGetWidth(self.frame) - margin) / (width + margin);
+    
+    CGFloat y = CGRectGetHeight(self.frame) - margin - height / 2;
+    
+    for (int i = 0; i &lt; rows; i++) {
+        CGFloat x = margin + width / 2;
+        for (int j = 0; j &lt; cols; j++) {
+            SKNode *block = [self newBlock];
+            block.position = CGPointMake(x, y);
+            x += width + margin;
+        }
+        y -= height + margin;
+    }
+}
+
+- (SKNode *)newBlock {
+    CGFloat width = [config[@&quot;block&quot;][@&quot;width&quot;] floatValue];
+    CGFloat height = [config[@&quot;block&quot;][@&quot;height&quot;] floatValue];
+    int maxLife = [config[@&quot;block&quot;][@&quot;max_life&quot;] floatValue];
+
+    SKSpriteNode *block = [SKSpriteNode spriteNodeWithColor:[SKColor cyanColor] size:CGSizeMake(width, height)];
+    block.name = @&quot;block&quot;;
+
+    int life = (arc4random() % maxLife) + 1;
+    block.userData = @{ @&quot;life&quot; : @(life) }.mutableCopy;
+    [self updateBlockAlpha:block];
+    
+    [self addChild:block];
+
+    return block;
+}
+
+- (void)updateBlockAlpha:(SKNode *)block {
+    int life = [block.userData[@&quot;life&quot;] intValue];
+    block.alpha = life * 0.2f;
+}
+</code></pre>
+
+<p>そして、TitleSceneをタップするとPlaySceneに遷移するようにします。<br/>
+Transitionは上にスライドするものを指定しています。</p>
+
+<p>なお、今回はSKSceneでタップをハンドルするため明示的に設定していませんが、ノードでタップを受け付ける時は、<code>userInteractionEnabled</code>をYESにするのを忘れないようにしましょう。</p>
+
+<pre><code class="objc:SJTitleScene.m">#import &quot;SJPlayScene.h&quot;
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    SKScene *scene = [SJPlayScene sceneWithSize:self.size];
+    SKTransition *transition = [SKTransition pushWithDirection:SKTransitionDirectionUp duration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+</code></pre>
+
+<p>これでブロックが表示されました。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/block.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="">パドルとボール</h2>
+
+<p>次はパドルとボールを表示して、タップでパドルを移動するところまで実装します。</p>
+
+<p>パドルとボール用の設定を追加します。</p>
+
+<pre><code class="js:config.json">    &quot;paddle&quot; : {
+        &quot;width&quot; : 70.0,
+        &quot;height&quot; : 14.0,
+        &quot;y&quot; : 40.0,
+    },
+    &quot;ball&quot; : {
+        &quot;radius&quot; : 6.0,
+    },
+</code></pre>
+
+<p><code>addPaddle</code>で設定を元にパドルを表示します。</p>
+
+<p>画面がタップされたときにボールがなければ、<code>addBall</code>を呼び出してボールを追加します。<br/>
+ボールがあればプレイ中と判断し、パドルを等速度で動かします。 </p>
+
+<p>パドルやボールは<code>name</code>に設定した値を元に<code>childNodeWithName:</code>で探索しています。（インスタンス変数に保持しても良い）<br/>
+パドルの移動はSKActionで行なっています。</p>
+
+<pre><code class="objc:SJPlayScene.m">
+- (id)initWithSize:(CGSize)size {
+        /* 省略 */
+        [self addPaddle];
+        /* 省略 */
+}
+
+# pragma mark - Paddle
+
+- (void)addPaddle {
+    CGFloat width = [config[@&quot;paddle&quot;][@&quot;width&quot;] floatValue];
+    CGFloat height = [config[@&quot;paddle&quot;][@&quot;height&quot;] floatValue];
+    CGFloat y = [config[@&quot;paddle&quot;][@&quot;y&quot;] floatValue];
+    
+    SKSpriteNode *paddle = [SKSpriteNode spriteNodeWithColor:[SKColor brownColor] size:CGSizeMake(width, height)];
+    paddle.name = @&quot;paddle&quot;;
+    paddle.position = CGPointMake(CGRectGetMidX(self.frame), y);
+    
+    [self addChild:paddle];
+}
+
+- (SKNode *)paddleNode {
+    return [self childNodeWithName:@&quot;paddle&quot;];
+}
+
+# pragma mark - Ball
+
+- (void)addBall {
+    CGFloat radius = [config[@&quot;ball&quot;][@&quot;radius&quot;] floatValue];
+
+    SKShapeNode *ball = [SKShapeNode node];
+    ball.name = @&quot;ball&quot;;
+    ball.position = CGPointMake(CGRectGetMidX([self paddleNode].frame), CGRectGetMaxY([self paddleNode].frame) + radius);
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path, NULL, 0, 0, radius, 0, M_PI * 2, YES);
+    ball.path = path;
+    ball.fillColor = [SKColor yellowColor];
+    ball.strokeColor = [SKColor clearColor];
+
+    CGPathRelease(path);
+
+    [self addChild:ball];
+}
+
+- (SKNode *)ballNode {
+    return [self childNodeWithName:@&quot;ball&quot;];
+}
+
+# pragma mark - Touch
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+
+    if (![self ballNode]) {
+        [self addBall];
+        return;
+    }
+
+    UITouch *touch = [touches anyObject];
+    CGPoint locaiton = [touch locationInNode:self];
+
+    CGFloat speed = [config[@&quot;paddle&quot;][@&quot;speed&quot;] floatValue];
+
+    CGFloat x = locaiton.x;
+    CGFloat diff = abs(x - [self paddleNode].position.x);
+    CGFloat duration = speed * diff;
+    SKAction *move = [SKAction moveToX:x duration:duration];
+    [[self paddleNode] runAction:move];
+}
+
+</code></pre>
+
+<p>これでパドルが表示され、</p>
+
+<ul>
+<li>1度目のタップでボールを表示</li>
+<li>2度目以降のタップでパドルが移動</li>
+</ul>
+
+<p>できるようになりました。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/paddle.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="">物理演算と当たり判定</h2>
+
+<p>Sprite Kitには物理エンジンが内蔵されています。</p>
+
+<p>ノードに<code>physicsBody</code>を設定すれば物理エンジンで管理されるようになるため、それだけで物理法則にしたがって動いてくれます。この簡単さが物理エンジンがビルトインされているメリットです。</p>
+
+<p>まずは、設定に<code>speed</code>と<code>velocity</code>を追加します。</p>
+
+<pre><code class="js:config.json">    &quot;paddle&quot; : {
+        &quot;width&quot; : 70.0,
+        &quot;height&quot; : 14.0,
+        &quot;y&quot; : 40.0,
+        &quot;speed&quot; : 0.005
+    },
+    &quot;ball&quot; : {
+        &quot;radius&quot; : 6.0,
+        &quot;velocity&quot; : {
+            &quot;x&quot; : 50.0,
+            &quot;y&quot; : 120.0
+        }
+    },
+
+</code></pre>
+
+<p>次にシーン、ブロック、パドル、ボールそれぞれに<code>physicsBody</code>を設定します。これだけでノードが重力の影響を受けるようになり、ノード同士が衝突（collision)するようになります。</p>
+
+<p>以下の画像の赤枠が、<code>physicsBody</code>の設定されている箇所です。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/physics.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>なお、この枠は<a href="https://github.com/ymc-thzi/PhysicsDebugger">PhysicsDebugger</a>で描画しています。</p>
+
+<pre><code class="ruby:Podfile">pod 'PhysicsDebugger', git: 'https://github.com/ymc-thzi/PhysicsDebugger.git'
+</code></pre>
+
+<pre><code class="objc:YourScene.m">#import &quot;YMCPhysicsDebugger.h&quot;
+
+- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        [YMCPhysicsDebugger init];
+        /* Create scene contens */
+       [self drawPhysicsBodies];
+    }
+}
+</code></pre>
+
+<p>とすれば利用できます。</p>
+
+<p><code>physicsBody</code>をただ設定するだけだと、全てのノードが重力によって落下していくだけです。ゲームとして成立するように設定を行ないましょう。</p>
+
+<p>ブロック・パドルは固定するため<code>dynamic</code>をNOにしています。</p>
+
+<p>ボールは、<strong>固定はしないが重力は無視</strong>するため、<code>affectedByGravity</code>をNOにして、<code>velocity</code>で力を加えて動かしています。<br/>
+また、<code>restitution</code>を1.0fにすることで、跳ね返る時に力が減衰しないように、<code>linearDamping</code>、<code>friction</code>はそれぞれ0にして空気抵抗をなくしています。</p>
+
+<p><code>usesPreciseCollisionDetection</code>をYESにすることで、衝突判定が正確になります。</p>
+
+<p><code>categoryBitMask</code>はノードのタイプを判別するためのビットマスクです。<code>contactTestBitMask</code>に設定したものと接触（contact）した場合、<code>didBeginContact:</code>が呼ばれます。
+delegateはシーンの<code>physicsWorld.contactDelegate</code>で設定します。
+今回はselfを指定し、その中でブロックの耐久力を減らしています。</p>
+
+<p>なお、delegateメソッドに渡されるオブジェクトは順不同のため、categoryBitMaskで並び替えてから処理する必要があります。</p>
+
+<pre><code class="objc:SJPlayScene.m">static const uint32_t blockCategory = 0x1 &lt;&lt; 0;
+static const uint32_t ballCategory = 0x1 &lt;&lt; 1;
+
+@interface SJPlayScene () &lt;SKPhysicsContactDelegate&gt;
+@end
+
+- (id)initWithSize:(CGSize)size {
+        /* 省略 */        
+        self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+        self.physicsWorld.contactDelegate = self;
+        /* 省略 */
+}
+
+# pragma mark - Block
+
+- (SKNode *)newBlock {
+    /* 省略 */    
+    block.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:block.size];
+    block.physicsBody.dynamic = NO;
+    block.physicsBody.categoryBitMask = blockCategory;
+    /* 省略 */    
+}
+
+- (void)decreaseBlockLife:(SKNode *)block {
+    int life = [block.userData[@&quot;life&quot;] intValue] - 1;
+    block.userData[@&quot;life&quot;] = @(life);
+    [self updateBlockAlpha:block];
+}
+
+# pragma mark - Paddle
+
+- (void)addPaddle {
+    /* 省略 */    
+    paddle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:paddle.size];
+    paddle.physicsBody.dynamic = NO;
+    /* 省略 */    
+}
+
+# pragma mark - Ball
+
+- (void)addBall {
+    /* 省略 */    
+    CGFloat velocityX = [config[@&quot;ball&quot;][@&quot;velocity&quot;][@&quot;x&quot;] floatValue];
+    CGFloat velocityY = [config[@&quot;ball&quot;][@&quot;velocity&quot;][@&quot;y&quot;] floatValue];
+    /* 省略 */    
+    ball.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:radius];
+    ball.physicsBody.affectedByGravity = NO;
+    ball.physicsBody.velocity = CGVectorMake(velocityX, velocityY);
+    ball.physicsBody.restitution = 1.0f;
+    ball.physicsBody.linearDamping = 0;
+    ball.physicsBody.friction = 0;
+    ball.physicsBody.usesPreciseCollisionDetection = YES;
+    ball.physicsBody.categoryBitMask = ballCategory;
+    ball.physicsBody.contactTestBitMask = blockCategory;
+    /* 省略 */    
+}
+
+# pragma mark - SKPhysicsContactDelegate
+
+- (void)didBeginContact:(SKPhysicsContact *)contact {
+    SKPhysicsBody *firstBody, *secondBody;
+    
+    if (contact.bodyA.categoryBitMask &lt; contact.bodyB.categoryBitMask) {
+        firstBody = contact.bodyA;
+        secondBody = contact.bodyB;
+    } else {
+        firstBody = contact.bodyB;
+        secondBody = contact.bodyA;
+    }
+    
+    if (firstBody.categoryBitMask &amp; blockCategory) {
+        if (secondBody.categoryBitMask &amp; ballCategory) {
+            [self decreaseBlockLife:firstBody.node];
+        }
+    }
+}
+</code></pre>
+
+<p>ようやくゲームらしくなってきました。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/hit.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h3 id="collisioncontact">collisionとcontact</h3>
+
+<p>collision（衝突）はその物体に触れた時に跳ね返るか、contact（接触）はdelegateが呼ばれるか、です。
+ちょっと日本語のイメージと逆な気もします。いわゆる<strong>当たり判定</strong>はcontactの方ですね。</p>
+
+<p>それぞれ<code>collisionTestBitMask</code>と<code>contactTestBitMask</code>で設定します。
+デフォルトではcollisionは全てのノードと、contactは無しになっているようです。</p>
+
+<p>例えばボールの<code>collisionTestBitMask</code>でブロックを指定しないようにすると、以下のGIFのように貫通する表現ができます。（<code>contactTestBitMask</code>は設定したままなのでブロックは破壊されます）</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/collision.gif" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="">パーティクルで爆発</h2>
+
+<p>終盤にさしかかってきました。
+ここで少し演出を加えてみましょう。</p>
+
+<p>パーティクルは、細かい粒子によって、炎や水といった自然界の曖昧なものを表現する技術です。Sprite Kitでは、これを簡単に作るためのノード（SKEmitterNode）やエディタ（<a href="https://developer.apple.com/LIBRARY/IOS/documentation/IDEs/Conceptual/xcode_guide-particle_emitter/Introduction/Introduction.html">Particle Emitter Editor</a>）が用意されています。</p>
+
+<p>New File…からファイルを追加します。<br/>
+Resourceから<strong>SpriteKit Particle File</strong>を選択し、Particle templateは<strong>Spark</strong>、ファイル名は<code>spark.sks</code>とします。</p>
+
+<p>すると以下のような<strong>sks</strong>ファイルが作られます。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/particle.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>これを、ブロックの破壊時にブロックの座標に表示して、すぐフェードアウトさせます。</p>
+
+<pre><code class="objc:SJPlayScene.m"># pragma mark - Block
+
+- (void)decreaseBlockLife:(SKNode *)block {
+    /* 省略 */
+    if (life &lt; 1) {
+        [self removeNodeWithSpark:block];
+    }
+    /* 省略 */
+}
+
+# pragma mark - Utilities
+
+- (void)removeNodeWithSpark:(SKNode *)node {
+    NSString *sparkPath = [[NSBundle mainBundle] pathForResource:@&quot;spark&quot; ofType:@&quot;sks&quot;];
+    SKEmitterNode *spark = [NSKeyedUnarchiver unarchiveObjectWithFile:sparkPath];
+    spark.position = node.position;
+    spark.xScale = spark.yScale = 0.3f;
+    [self addChild:spark];
+    
+    SKAction *fadeOut = [SKAction fadeOutWithDuration:0.3f];
+    SKAction *remove = [SKAction removeFromParent];
+    SKAction *sequence = [SKAction sequence:@[fadeOut, remove]];
+    [spark runAction:sequence];
+    
+    [node removeFromParent];
+}
+</code></pre>
+
+<p>これでブロックの耐久力が0になると、爆発と共に消滅するようになりました。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/spark.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="">仕上げ</h2>
+
+<p>最後に、もう少しゲームらしくなるように調整しましょう。</p>
+
+<p>ラベルとライフ（残機）の設定を追加します。</p>
+
+<pre><code class="js:config.json">    &quot;label&quot; : {
+        &quot;margin&quot; : 5.0,
+        &quot;font_size&quot; : 14.0
+    },
+    &quot;max_life&quot; : 5
+</code></pre>
+
+<p>ライフと何ステージ目かを保持するプロパティと、イニシャライザを追加します。</p>
+
+<pre><code class="objc:SJPlayScene.h">@property (nonatomic) int life;
+@property (nonatomic) int stage;
+- (id)initWithSize:(CGSize)size life:(int)life stage:(int)stage;
+</code></pre>
+
+<p><code>initWithSize:</code>は<code>initWithSize:life:stage:</code>を呼び出すように変更します。
+イニシャライザの中で、ライフやステージを表示するSKLabelNodeも追加しています。</p>
+
+<p>なお、ノードは<code>addChild:</code>されたのが遅いほど前面に表示されるため、何も設定しないと下記のようにラベルが隠れてしまいます。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/z_position.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>今回ラベルには<code>zPosition</code>を設定して、あとから追加されるボールよりも手前に表示されるようにしています。（zPositionの小さい順に描画され、デフォルトは0.0のため）</p>
+
+<p>また、ボールの<code>velocity</code>に<code>self.stage</code>をプラスしてステージが進むごとに難易度をあげています。</p>
+
+<p><code>blockNodes</code>が0になればステージクリアとして、PlaySceneをもう一度表示します。</p>
+
+<pre><code class="objc:SJPlayScene.m">#import &quot;SJGameOverScene.h&quot;
+
+- (id)initWithSize:(CGSize)size life:(int)life stage:(int)stage {
+    self = [super initWithSize:size];
+    if (self) {
+        self.life = life;
+        self.stage = stage;
+
+        [self addBlocks];
+        [self addPaddle];
+        
+        [self addStageLabel];
+        [self addLifeLabel];
+        [self updateLifeLabel];
+        
+        self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
+        self.physicsWorld.contactDelegate = self;
+    }
+    return self;
+}
+
+- (id)initWithSize:(CGSize)size {
+    return [self initWithSize:size life:[config[@&quot;max_life&quot;] intValue] stage:1];
+}
+
+# pragma mark - Block
+
+- (void)decreaseBlockLife:(SKNode *)block {
+        /* 省略 */
+        if ([self blockNodes].count &lt; 1) {
+            [self nextLevel];
+        }
+        /* 省略 */
+}
+
+- (NSArray *)blockNodes {
+    NSMutableArray *nodes = @[].mutableCopy;
+    [self enumerateChildNodesWithName:@&quot;block&quot; usingBlock:^(SKNode *node, BOOL *stop) {
+        [nodes addObject:node];
+    }];
+    return nodes;
+}
+
+# pragma mark - Ball
+
+- (void)addBall {
+    /* 省略 */
+    ball.physicsBody.velocity = CGVectorMake(velocityX + self.stage, velocityY + self.stage);
+    /* 省略 */
+}
+
+# pragma mark - Label
+
+- (void)addStageLabel {
+    CGFloat margin = [config[@&quot;label&quot;][@&quot;margin&quot;] floatValue];
+    CGFloat fontSize = [config[@&quot;label&quot;][@&quot;font_size&quot;] floatValue];
+
+    SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@&quot;HelveticaNeue-Bold&quot;];
+    label.text = [NSString stringWithFormat:@&quot;STAGE %d&quot;, _stage];
+    label.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    label.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+    label.position = CGPointMake(CGRectGetMaxX(self.frame) - margin, CGRectGetMaxY(self.frame) - margin);
+    label.fontSize = fontSize;
+    label.zPosition = 1.0f;
+    [self addChild:label];
+}
+
+- (void)addLifeLabel {
+    CGFloat margin = [config[@&quot;label&quot;][@&quot;margin&quot;] floatValue];
+    CGFloat fontSize = [config[@&quot;label&quot;][@&quot;font_size&quot;] floatValue];
+
+    SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@&quot;HiraKakuProN-W3&quot;];
+    label.verticalAlignmentMode = SKLabelVerticalAlignmentModeTop;
+    label.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+    label.position = CGPointMake(margin, CGRectGetMaxY(self.frame) - margin);
+    label.fontSize = fontSize;
+    label.zPosition = 1.0f;
+    label.color = [SKColor magentaColor];
+    label.colorBlendFactor = 1.0f;
+    label.name = @&quot;lifeLabel&quot;;
+    [self addChild:label];
+}
+
+- (void)updateLifeLabel {
+    NSMutableString *s = @&quot;&quot;.mutableCopy;
+    for (int i = 0; i &lt; _life; i++) {
+        [s appendString:@&quot;♥&quot;];
+    }
+    [self lifeLabel].text = s;
+}
+
+- (SKLabelNode *)lifeLabel {
+    return (SKLabelNode *)[self childNodeWithName:@&quot;lifeLabel&quot;];
+}
+
+# pragma mark - Callbacks
+
+- (void)update:(NSTimeInterval)currentTime {
+    if((int)currentTime % 5 == 0) {
+        CGVector velocity = [self ballNode].physicsBody.velocity;
+        velocity.dx *= 1.001f;
+        velocity.dy *= 1.001f;
+        [self ballNode].physicsBody.velocity = velocity;
+    }
+}
+
+- (void)didEvaluateActions {
+    CGFloat width = [config[@&quot;paddle&quot;][@&quot;width&quot;] floatValue];
+
+    CGPoint paddlePosition = [self paddleNode].position;
+    if (paddlePosition.x &lt; width / 2) {
+        paddlePosition.x = width / 2;
+    } else if (paddlePosition.x &gt; CGRectGetWidth(self.frame) - width / 2) {
+        paddlePosition.x = CGRectGetWidth(self.frame) - width / 2;
+    }
+    [self paddleNode].position = paddlePosition;
+}
+
+- (void)didSimulatePhysics {
+    if ([self ballNode] &amp;&amp; [self ballNode].position.y &lt; [config[@&quot;ball&quot;][@&quot;radius&quot;] floatValue] * 2) {
+        [self removeNodeWithSpark:[self ballNode]];
+        _life--;
+        [self updateLifeLabel];
+        if (_life &lt; 1) {
+            [self gameOver];
+        }
+    }
+}
+
+# pragma mark - Utilities
+
+- (void)gameOver {
+    SKScene *scene = [SJGameOverScene sceneWithSize:self.size];
+    SKTransition *transition = [SKTransition pushWithDirection:SKTransitionDirectionDown duration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+
+- (void)nextLevel {
+    SJPlayScene *scene = [[SJPlayScene alloc] initWithSize:self.size life:self.life stage:self.stage + 1];
+    SKTransition *transition = [SKTransition doorwayWithDuration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+
+</code></pre>
+
+<p><code>Callbacks</code>の部分では、Sprite Kitによるフレーム毎の処理に後に微調整を加えています。
+Sprite Kitのゲームループは、以下の画像のようになっており、緑色の部分で独自処理をはさむことができます。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/ja/chart.png" alt="" />
+<figcaption></figcaption></figure>
+
+<p>今回は、<code>update:</code>で5秒ごとにボールの速度をはやめています。<br/>
+<code>didEvaluateActions</code>では、アクションにより画面外に行ってしまうパドルを画面内に収めています。<br/>
+<code>didSimulatePhysics</code>では、ボールが画面最下部に行った時に破壊して、ライフを減らす処理をしています。0になればゲームオーバーを表示します。</p>
+
+<p>ゲームオーバー用のシーンは、ほぼタイトル画面と同じです。</p>
+
+<pre><code class="objc:SJGameOverScene.m">#import &quot;SJPlayScene.h&quot;
+
+- (id)initWithSize:(CGSize)size {
+    self = [super initWithSize:size];
+    if (self) {
+        SKLabelNode *titleLabel = [SKLabelNode labelNodeWithFontNamed:@&quot;HelveticaNeue&quot;];
+        titleLabel.text = @&quot;GAVE OVER...&quot;;
+        titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+        titleLabel.fontSize = 40.0f;
+        [self addChild:titleLabel];
+    }
+    return self;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    SKScene *scene = [SJPlayScene sceneWithSize:self.size];
+    SKTransition *transition = [SKTransition pushWithDirection:SKTransitionDirectionUp duration:1.0f];
+    [self.view presentScene:scene transition:transition];
+}
+
+</code></pre>
+
+<p>これで、ライフが0になると<strong>GAME OVER…</strong>と表示されます。タップでリトライします。</p>
+
+<figure>
+<img src="http://tnantoka.github.io/hello-spritekit/images/game_over.png" alt="" />
+<figcaption></figcaption></figure>
+
+<h2 id="">できあがり</h2>
+
+<p>これで完成です。<br/>
+PlaySceneが約300行、その他のファイルは数十行です。
+とても短い、というわけではないですが、十分お手軽ではないでしょうか。</p>
+
+<p>ちなみに僕は今、<a href="http://spritekit.jp/">RPGのリリースに向け悪戦苦闘中</a>です。皆さんもSprite Kitでゲーム作成してみませんか。</p>
+
+<h2 id="">ソースコード</h2>
+
+<p><a href="https://github.com/tnantoka/hello-spritekit">tnantoka/hello-spritekit</a>にて公開しています。<br/>
+ライセンスはThe MIT Licenseですので、ご自由にどうぞ。<br/>
+スターしてくれたら喜びます！</p>
+
+<h2 id="">参考</h2>
+
+<ul>
+<li><a href="https://developer.apple.com/library/IOs/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Introduction/Introduction.html">Sprite Kit Programming Guide</a><br/>
+残念ながら、<a href="https://developer.apple.com/jp/devcenter/ios/library/japanese.html">日本語訳</a>はまだ提供されていません。</li>
+<li><a href="https://developer.apple.com/Library/ios/documentation/SpriteKit/Reference/SpriteKitFramework_Ref/_index.html">Sprite Kit Framework Reference</a></li>
+</ul>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/filename.js"></script>
+
+</body>
+</html>
