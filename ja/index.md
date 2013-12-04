@@ -52,7 +52,6 @@ Sprite Kitとは、iOS・Mac OS X向けの2Dゲームを作るための、Apple�
 1 | SKView | UIViewのサブクラス。Sprite Kitの描画を担当します。
 2 | SKScene | ゲームの1画面に相当。この中にいろいろな子ノードを追加してゲーム画面を作っていきます。
 3 | SKTransition | シーン遷移時のアニメーションを指定します。フェードイン・アウトやドアなど様々な種類があります。SKViewの`presentScene:transition:`メソッドで指定します。
-
 4 | NodeCount, DrawCount, FPS | 開発用の情報表示です。SKViewの`showsDrawCount`, `showsNodeCount`, `showsFPS`をYESにすることで描画されます。
 5 | SKSpriteNode | テクスチャ画像（SKTexture）を表示するためのノードです。色を指定して矩形の表示もできます。
 6 | SKLabelNode | 1行のテキストを表示するノードです。
