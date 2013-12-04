@@ -1,0 +1,3 @@
+platform :ios, '7.0'
+
+pod 'PhysicsDebugger', git: 'https://github.com/ymc-thzi/PhysicsDebugger.git'

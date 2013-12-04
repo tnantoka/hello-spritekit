@@ -1,0 +1,27 @@
+{
+    "block" : {
+        "margin" : 16.0,
+        "width" : 34.0,
+        "height" : 16.0,
+        "rows" : 5,
+        "max_life" : 5
+    },
+    "paddle" : {
+        "width" : 70.0,
+        "height" : 14.0,
+        "y" : 40.0,
+        "speed" : 0.005
+    },
+    "ball" : {
+        "radius" : 6.0,
+        "velocity" : {
+            "x" : 50.0,
+            "y" : 120.0
+        }
+    },
+    "label" : {
+        "margin" : 5.0,
+        "font_size" : 14.0
+    },
+    "max_life" : 5
+}

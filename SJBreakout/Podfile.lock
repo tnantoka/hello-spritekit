@@ -1,0 +1,14 @@
+PODS:
+  - PhysicsDebugger (1.0.0)
+
+DEPENDENCIES:
+  - PhysicsDebugger (from `https://github.com/ymc-thzi/PhysicsDebugger.git`)
+
+EXTERNAL SOURCES:
+  PhysicsDebugger:
+    :git: https://github.com/ymc-thzi/PhysicsDebugger.git
+
+SPEC CHECKSUMS:
+  PhysicsDebugger: eff7aa78948b0f29e0d1d3454bc3d51e3493f000
+
+COCOAPODS: 0.27.1

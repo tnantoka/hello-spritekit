@@ -1,0 +1,14 @@
+# Mac
+.DS_Store
+
+# Vim
+*~
+.*.sw*
+
+# Xcode
+UserInterfaceState.xcuserstate
+xcuserdata
+
+# CocoaPods
+Pods
+
